@@ -13,11 +13,9 @@ As a user, I can choose to make my profile public or private.
 As an admin user, I can see both public and private user profiles.
 As a normal user, I can only see public user profiles.
 
-
 1. Installation
 Clone the repository:
 git clone <repository_url>
-
 
 2. Install dependencies:
    cd <project_folder>
@@ -28,27 +26,16 @@ git clone <repository_url>
 PORT=5000
 CORS_ORIGIN=
 MONGO_URI=
-
-
 # cloudinary configuration
 CLOUDINARY_CLOUD_NAME = 
 CLOUDINARY_API_KEY = 
 CLOUDINARY_API_SECRET = 
-
-
-
 #JWT
 JWT_SECRET_KEY=
-
-
-
 #GOOGLE CLIENT
 GOOGLE_CLIENT_ID = 
 GOOGLE_CLIENT_SECRET = 
 GOOGLE_CALLBACK_URL = 
-
-
-
 
 4. Start the server:
    node server.js
