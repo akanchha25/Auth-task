@@ -5,6 +5,7 @@ const { hashedPassword } = require("../../utils/hashPassword");
 const { generateAccessToken } = require("../../utils/jwtHelper");
 const logger = require("../../utils/logger");
 const bcrypt = require("bcryptjs");
+const Order = require("../../models/order.model");
 
 exports.signUp = async (req, res) => {
   try {
@@ -106,5 +107,66 @@ exports.signOut = async (req, res) => {
   } catch (error) {
     logger.error(error.message);
     res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+exports.deleteFileFromS3 = async (req, res) => {
+  try {
+    const key = req.params;
+    const key1 = req.params["0"];
+
+    // Use the deleteFileFromS3 function here.
+    deleteFromS3(key, key1)
+      .then((result) => {
+        res.status(200).json(result);
+      })
+      .catch((error) => {
+        console.error("Error deleting image:", error);
+        res.status(500).json({ message: "Internal server error" });
+      });
+  } catch (error) {
+    console.error("Error deleting image:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+exports.createOrder = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const {
+      subject,
+      topic,
+      writingChoice,
+      highlight,
+      fileLink,
+      comment,
+      deadline,
+      wordsLimit,
+      amount,
+    } = req.body;
+
+    if (!userId) {
+      return res.status(402).json({ message: `Please Login` });
+    }
+
+    const order = new Order({
+      amount,
+      userId,
+      comment,
+      deadline,
+      file_link: fileLink,
+      status: "PENDING",
+      wordsLimit,
+      highlight,
+      written_choice: writingChoice,
+      topic,
+      subject,
+    });
+    const saveOrder = await order.save();
+
+    return res.status(200).json({ message: "Order created successfully" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Internal server error" });
   }
 };

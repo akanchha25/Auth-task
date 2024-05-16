@@ -23,6 +23,7 @@ const authenticate = async (req, res, next) => {
     }
 
     req.user = rootUser
+    req.userId = decodeToken.userId
     req.userEmail = userEmail
     req.userRole = userRole
     next()
